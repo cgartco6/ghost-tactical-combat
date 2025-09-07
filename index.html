@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghosts: Tactical Combat - Elite Squad Warfare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0c1b33;
+            --secondary: #1e3a5f;
+            --accent: #4cc9f0;
+            --accent-dark: #2a9d8f;
+            --danger: #e63946;
+            --success: #2a9d8f;
+            --warning: #f4a261;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #0a0a1a;
+            color: var(--light);
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(28, 58, 95, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(28, 58, 95, 0.1) 0%, transparent 25%);
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .logo-text span {
+            color: var(--light);
+        }
+        
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 32px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav li {
+            margin-left: 25px;
+        }
+        
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover, nav a.active {
+            background-color: rgba(76, 201, 240, 0.2);
+            color: var(--accent);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 160px 0 100px;
+            background: linear-gradient(rgba(10, 10, 26, 0.9), rgba(10, 10, 26, 0.9)), url('https://images.unsplash.com/photo-1531315630201-bb15abeb1653?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80') no-repeat center center/cover;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            color: var(--light);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--accent);
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: 2px solid var(--accent);
+        }
+        
+        .btn:hover {
+            background: transparent;
+            color: var(--accent);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--accent);
+            margin-left: 15px;
+        }
+        
+        .btn-outline:hover {
+            background: var(--accent);
+            color: var(--dark);
+        }
+        
+        /* Features Section */
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            display: inline-block;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--accent);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        /* Characters Section */
+        .characters {
+            background: var(--dark);
+        }
+        
+        .character-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .character-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .character-img {
+            height: 250px;
+            background-position: center;
+            background-size: cover;
+        }
+        
+        .character-info {
+            padding: 20px;
+        }
+        
+        .character-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .character-role {
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        .character-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .skill-tag {
+            background: rgba(76, 201, 240, 0.2);
+            color: var(--accent);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        /* Platforms Section */
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .platform-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .platform-icon {
+            font-size: 50px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .platform-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        /* AI Agents Section */
+        .ai-agents {
+            background: var(--dark);
+        }
+        
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .agent-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .agent-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .agent-icon {
+            font-size: 30px;
+            color: var(--accent);
+            margin-right: 15px;
+        }
+        
+        .agent-name {
+            font-size: 1.3rem;
+        }
+        
+        .agent-role {
+            color: var(--accent-dark);
+            font-size: 0.9rem;
+        }
+        
+        .agent-capabilities {
+            margin-top: 15px;
+        }
+        
+        .capability-list {
+            list-style: none;
+        }
+        
+        .capability-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .capability-list li:before {
+            content: "•";
+            color: var(--accent);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--accent);
+            color: var(--dark);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--primary);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            }
+            
+            nav ul.show {
+                display: flex;
+            }
+            
+            nav li {
+                margin: 10px 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .btn-outline {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                padding: 140px 0 80px;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .feature-card, .platform-card, .agent-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">👻</span>
+                    <div class="logo-text">Ghosts: <span>Tactical Combat</span></div>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <nav>
+                    <ul id="navMenu">
+                        <li><a href="#home" class="active">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#characters">Characters</a></li>
+                        <li><a href="#platforms">Platforms</a></li>
+                        <li><a href="#ai-agents">AI Team</a></li>
+                        <li><a href="#dashboard">Dashboard</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Lead Your Elite Squad to Victory</h1>
+            <p>Experience next-generation tactical combat with AI-powered teammates, photorealistic environments, and heart-pounding missions across diverse terrains.</p>
+            <div>
+                <a href="#platforms" class="btn">Play Now</a>
+                <a href="#features" class="btn btn-outline">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Game Features</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI-Powered Teammates</h3>
+                    <p>Command intelligent squad members with unique abilities and realistic behaviors.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h3>Dynamic Environments</h3>
+                    <p>Battle across diverse terrains with realistic weather and day/night cycles.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-fist-raised"></i>
+                    </div>
+                    <h3>Specialized Skills</h3>
+                    <p>Utilize each character's unique abilities to overcome challenging missions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Tactical Combat</h3>
+                    <p>Plan your approach with realistic ballistics and destructible environments.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Token Rewards</h3>
+                    <p>Earn tokens for mission success and use them to upgrade your equipment.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>AI-Generated Content</h3>
+                    <p>Enjoy endless content with AI-generated missions, environments, and challenges.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Characters Section -->
+    <section class="section characters" id="characters">
+        <div class="container">
+            <div class="section-title">
+                <h2>Elite Squad Members</h2>
+            </div>
+            <div class="character-cards">
+                <div class="character-card">
+                    <div class="character-img" style="background-image: url('https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=872&q=80');"></div>
+                    <div class="character-info">
+                        <h3>Chris "Rage" Hemsworth</h3>
+                        <div class="character-role">Assault Specialist</div>
+                        <p>When the mission gets tough, Chris enters a controlled rage mode, increasing damage output and reducing recoil.</p>
+                        <div class="character-skills">
+                            <span class="skill-tag">Rage Mode</span>
+                            <span class="skill-tag">Heavy Weapons</span>
+                            <span class="skill-tag">Demolitions</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="character-card">
+                    <div class="character-img" style="background-image: url('https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=872&q=80');"></div>
+                    <div class="character-info">
+                        <h3>Liam "Drone" Hemsworth</h3>
+                        <div class="character-role">Technology Specialist</div>
+                        <p>Liam can hack enemy drones and security systems, providing tactical advantages and intelligence.</p>
+                        <div class="character-skills">
+                            <span class="skill-tag">Drone Hacking</span>
+                            <span class="skill-tag">System Infiltration</span>
+                            <span class="skill-tag">Tech Support</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="character-card">
+                    <div class="character-img" style="background-image: url('https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=872&q=80');"></div>
+                    <div class="character-info">
+                        <h3>Luke "Sniper" Hemsworth</h3>
+                        <div class="character-role">Recon Specialist</div>
+                        <p>Luke provides overwatch with precision sniper support and can tag enemies through walls.</p>
+                        <div class="character-skills">
+                            <span class="skill-tag">Precision Shooting</span>
+                            <span class="skill-tag">Stealth</span>
+                            <span class="skill-tag">Enemy Tagging</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platforms Section -->
+    <section class="section" id="platforms">
+        <div class="container">
+            <div class="section-title">
+                <h2>Available Platforms</h2>
+            </div>
+            <div class="platforms-grid">
+                <div class="platform-card">
+                    <div class="platform-icon">
+                        <i class="fab fa-android"></i>
+                    </div>
+                    <h3>Android</h3>
+                    <p>Optimized for thousands of devices with touch controls and mobile-specific features.</p>
+                    <a href="#" class="btn">Get on Google Play</a>
+                </div>
+                <div class="platform-card">
+                    <div class="platform-icon">
+                        <i class="fab fa-apple"></i>
+                    </div>
+                    <h3>iOS</h3>
+                    <p>Experience enhanced graphics and performance on Apple devices with Metal API optimization.</p>
+                    <a href="#" class="btn">Get on App Store</a>
+                </div>
+                <div class="platform-card">
+                    <div class="platform-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Web</h3>
+                    <p>Play instantly in your browser with WebGL technology. No downloads required.</p>
+                    <a href="#" class="btn">Play Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Agents Section -->
+    <section class="section ai-agents" id="ai-agents">
+        <div class="container">
+            <div class="section-title">
+                <h2>AI Development Team</h2>
+            </div>
+            <div class="agents-grid">
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <div class="agent-name">Character Genesis Duo</div>
+                            <div class="agent-role">Character Creation</div>
+                        </div>
+                    </div>
+                    <p>Creates realistic character models with unique personalities and abilities.</p>
+                    <div class="agent-capabilities">
+                        <ul class="capability-list">
+                            <li>4K character modeling</li>
+                            <li>Personality generation</li>
+                            <li>Animation creation</li>
+                            <li>Skill balancing</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">
+                            <i class="fas fa-mountain"></i>
+                        </div>
+                        <div>
+                            <div class="agent-name">Terraform Twins</div>
+                            <div class="agent-role">Environment Design</div>
+                        </div>
+                    </div>
+                    <p>Designs and generates diverse combat environments with realistic terrain.</p>
+                    <div class="agent-capabilities">
+                        <ul class="capability-list">
+                            <li>Terrain generation</li>
+                            <li>Texture creation</li>
+                            <li>Prop placement</li>
+                            <li>Lighting setup</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">
+                            <i class="fas fa-cloud-sun-rain"></i>
+                        </div>
+                        <div>
+                            <div class="agent-name">Weather Warden</div>
+                            <div class="agent-role">Weather Systems</div>
+                        </div>
+                    </div>
+                    <p>Implements dynamic weather that affects gameplay and visuals.</p>
+                    <div class="agent-capabilities">
+                        <ul class="capability-list">
+                            <li>Weather simulation</li>
+                            <li>Visual effects</li>
+                            <li>Gameplay impact</li>
+                            <li>Performance optimization</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <div>
+                            <div class="agent-name">Voice & Comms Engineer</div>
+                            <div class="agent-role">Audio Systems</div>
+                        </div>
+                    </div>
+                    <p>Creates realistic voice lines and communication systems.</p>
+                    <div class="agent-capabilities">
+                        <ul class="capability-list">
+                            <li>Voice synthesis</li>
+                            <li>Dialogue generation</li>
+                            <li>Audio processing</li>
+                            <li>3D sound positioning</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">
+                            <i class="fas fa-crosshairs"></i>
+                        </div>
+                        <div>
+                            <div class="agent-name">Arsenal Forge Master</div>
+                            <div class="agent-role">Weapon Design</div>
+                        </div>
+                    </div>
+                    <p>Designs and balances weapons with realistic ballistics and upgrade paths.</p>
+                    <div class="agent-capabilities">
+                        <ul class="capability-list">
+                            <li>Weapon modeling</li>
+                            <li>Ballistics simulation</li>
+                            <li>Recoil patterns</li>
+                            <li>Upgrade systems</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div>
+                            <div class="agent-name">Skill Architect</div>
+                            <div class="agent-role">Ability Systems</div>
+                        </div>
+                    </div>
+                    <p>Creates and balances character skills and progression systems.</p>
+                    <div class="agent-capabilities">
+                        <ul class="capability-list">
+                            <li>Skill tree design</li>
+                            <li>Balance testing</li>
+                            <li>Progression systems</li>
+                            <li>UI integration</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section class="section" id="dashboard">
+        <div class="container">
+            <div class="section-title">
+                <h2>Game Dashboard</h2>
+            </div>
+            <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); padding: 30px; border-radius: 10px; text-align: center;">
+                <h3>Real-time Game Analytics</h3>
+                <p style="margin-bottom: 20px;">Access detailed analytics, player statistics, and revenue data through our advanced dashboard.</p>
+                <a href="#" class="btn">Access Dashboard</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Ghosts: Tactical Combat</h3>
+                    <p>Experience the next generation of tactical squad-based combat with AI-powered teammates and environments.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#characters">Characters</a></li>
+                        <li><a href="#platforms">Platforms</a></li>
+                        <li><a href="#ai-agents">AI Team</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Forums</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Download</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Google Play Store</a></li>
+                        <li><a href="#">Apple App Store</a></li>
+                        <li><a href="#">Web Version</a></li>
+                        <li><a href="#">Windows PC</a></li>
+                        <li><a href="#">Mac Version</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Ghosts: Tactical Combat. All rights reserved. Developed with AI-powered technology.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('show');
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                // Close mobile menu after clicking
+                document.getElementById('navMenu').classList.remove('show');
+            });
+        });
+        
+        // Update active nav link on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (pageYOffset >= sectionTop - 100) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
